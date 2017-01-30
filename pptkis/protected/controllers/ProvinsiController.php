@@ -98,8 +98,12 @@ class ProvinsiController extends Controller
 		if(isset($_POST['Provinsi']))
 		{
 			$model->attributes=$_POST['Provinsi'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id_provinsi));
+			$result = Provinsi::model()->exists('nm_provinsi = :provinsi', 
+							    [':provinsi' => $model->attributes['nm_provinsi']]);
+			if(!$result) {
+				if($model->save())
+					$this->redirect(array('view','id'=>$model->id_provinsi));
+			}
 		}
 
 		$this->render('update',array(
